@@ -1,2 +1,4 @@
 locals {
+  location = "WestUS2"
+
 }

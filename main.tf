@@ -1,12 +1,12 @@
 resource "azurerm_resource_group" "apim-aks" {
   name     = "blog-apim-and-aks"
-  location = "WestUS2"
+  location = local.location
 }
 
 resource "azurerm_virtual_network" "apim-aks" {
   resource_group_name = azurerm_resource_group.apim-aks.name
   name                = "apim-aks-vnet"
-  location            = "WestUS2"
+  location            = local.location
 
   address_space = [
     "10.10.0.0/16",
@@ -36,7 +36,7 @@ resource "azurerm_subnet" "apim" {
 resource "azurerm_kubernetes_cluster" "test" {
   resource_group_name = azurerm_resource_group.apim-aks.name
   name                = "aks-for-apim"
-  location            = "WestUS2"
+  location            = local.location
   dns_prefix          = "nfaksapim"
 
   default_node_pool {
@@ -65,7 +65,7 @@ resource "azurerm_api_management" "apim" {
   publisher_name       = "Rafael"
   publisher_email      = "rafaelpadovezi@gmail.com"
   name                 = "blog-apim-003"
-  location             = "WestUS2"
+  location             = local.location
 
   virtual_network_configuration {
     subnet_id = azurerm_subnet.apim.id
@@ -101,6 +101,23 @@ resource "azurerm_api_management_api_operation" "get" {
 
   response {
     status_code = 200
+  }
+}
+
+resource "azurerm_api_management_api_operation" "api_mgt_api_operation" {
+  url_template        = "/test"
+  resource_group_name = azurerm_resource_group.apim-aks.name
+  operation_id        = "get-test"
+  method              = "GET"
+  display_name        = "get-test"
+  api_name            = azurerm_api_management_api.back-end-api2.id
+  api_management_name = azurerm_api_management.apim.name
+
+  response {
+    status_code = 200
+  }
+  response {
+    status_code = 400
   }
 }
 
