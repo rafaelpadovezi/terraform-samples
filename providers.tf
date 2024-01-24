@@ -8,6 +8,13 @@ terraform {
       version = "= 2.25.2"
     }
   }
+
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform-state"
+    storage_account_name = "brainboardpoc0001"
+    container_name       = "terraform-state"
+    key                  = "terraform.tfstate"
+  }
 }
 provider "azurerm" {
   features {}
