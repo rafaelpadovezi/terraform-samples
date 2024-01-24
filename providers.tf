@@ -12,7 +12,6 @@ terraform {
 provider "azurerm" {
   features {}
 }
-
 provider "kubernetes" {
   host = azurerm_kubernetes_cluster.test.kube_config.0.host
 

@@ -1,10 +1,11 @@
 resource "kubernetes_deployment" "example" {
   metadata {
-    name   = "private-api"
+    name = "private-api"
     labels = {
       app = "private-api"
     }
   }
+
   spec {
     replicas = 2
     selector {
@@ -40,12 +41,17 @@ resource "kubernetes_deployment" "example" {
 }
 
 resource "kubernetes_service" "example" {
+
+  depends_on = [
+    azurerm_role_assignment.role_assignment_cluster_subnet,
+  ]
   metadata {
-    name        = "private-api"
+    name = "private-api"
     annotations = {
       "service.beta.kubernetes.io/azure-load-balancer-internal" = "true"
     }
   }
+
   spec {
     selector = {
       app = "private-api"
@@ -59,10 +65,8 @@ resource "kubernetes_service" "example" {
     type = "LoadBalancer"
   }
 
-  depends_on = [
-    azurerm_role_assignment.role_assignment_cluster_subnet
-  ]
   timeouts {
     create = "3m"
   }
 }
+
