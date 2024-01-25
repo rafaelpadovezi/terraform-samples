@@ -1,6 +1,8 @@
-backend "azurerm" {
-  resource_group_name  = "rg-terraform-state"
-  storage_account_name = "brainboardpoc0001"
-  container_name       = "terraform-state"
-  key                  = "ea53ca6c-44e7-412d-9ecb-20aa47b5aaa0.tfstate"
+terraform {
+  backend "azurerm" {
+    storage_account_name = "brainboardpoc0001"
+    container_name       = "terraform-state"
+    key                  = "84d71b78-139f-4a65-8ccf-42f156e8f32d"
+  }
 }
+  
