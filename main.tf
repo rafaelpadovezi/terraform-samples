@@ -121,3 +121,8 @@ resource "azurerm_api_management_api_operation" "api_mgt_api_operation" {
   }
 }
 
+resource "azurerm_key_vault" "kv" {
+  tags     = merge(var.tags, {})
+  location = "East US"
+}
+
